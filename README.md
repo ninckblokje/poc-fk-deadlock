@@ -16,3 +16,20 @@ By default, Maven and the test will fail. Provide one of the following profiles 
 
 - sqlserver-local (using a local SQL Server)
 - sqlserver (using a docker SQL Server)
+
+## Transaction isolation
+
+According to Camunda, SQL Server uses a different implementation of *READ_COMMITTED*. This can cause deadlocks. To
+change this, execute the following SQL commands on a databsae (not on a system database):
+
+````sql
+ALTER DATABASE [process-engine]
+SET ALLOW_SNAPSHOT_ISOLATION ON
+
+ALTER DATABASE [process-engine]
+SET READ_COMMITTED_SNAPSHOT ON
+````
+
+Documentation:
+- https://docs.camunda.org/manual/7.13/user-guide/process-engine/database/#configuration-for-microsoft-sql-server
+- https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server
